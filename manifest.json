@@ -1,9 +1,20 @@
+
 {
-  "name": "JARVIS – Personal AI",
+  "name": "JARVIS 2.0",
   "short_name": "JARVIS",
-  "start_url": "./index.html",
+  "description": "Dein persönlicher Sprach- und Textassistent",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#050b18",
   "theme_color": "#050b18",
-  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
 }
