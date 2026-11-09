@@ -76,14 +76,27 @@ if(!window.speechSynthesis)return;
 speechSynthesis.cancel();
 let u=new SpeechSynthesisUtterance(t);u.lang='de-DE';speechSynthesis.speak(u)
 }
-function answer(q){
-let s=q.toLowerCase(),a;
-if(/hallo|hi|hey/.test(s))a='Hallo! Was möchtest du wissen?';
-else if(/uhrzeit|wie spät/.test(s))a='Es ist '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+'.';
-else if(/datum|welcher tag/.test(s))a='Heute ist '+new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})+'.';
-else if(/hilfe|was kannst du/.test(s))a='Ich kann Nachrichten empfangen, einige lokale Fragen beantworten und Antworten vorlesen. Die echte KI-Verbindung folgt als nächster Schritt.';
-else a='Ich habe deine Nachricht empfangen: „'+q+'“. Die echte KI ist noch nicht verbunden.';
-add('JARVIS',a);state.textContent='Antwort bereit'
+async function answer(q) {
+  add('JARVIS', 'Nachricht wird an den Server gesendet ...');
+  try {
+    const response = await fetch(
+      'https://jarvis-ai-server.khaledsukar11.workers.dev',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: q })
+      }
+    );
+
+    const data = await response.json();
+    add('JARVIS', data.reply || data.error || 'Keine Antwort erhalten.');
+    state.textContent = 'Antwort bereit';
+  } catch (error) {
+    add('JARVIS', 'Verbindung zum Server fehlgeschlagen.');
+    state.textContent = 'Verbindungsfehler';
+  }
 }
 function send(){
 let q=input.value.trim();if(!q)return;
